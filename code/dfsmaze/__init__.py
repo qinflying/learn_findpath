@@ -11,6 +11,8 @@ def DFS(oMapHandler, x, y, step, stack):
 	if oMapHandler.IsChar(x, y, defines.END_C):
 		return step
 
+	stack.append((x, y))
+
 	#四周位置
 	for dx, dy in defines.FOUR_DIRS:
 		tx = x + dx 
@@ -19,20 +21,28 @@ def DFS(oMapHandler, x, y, step, stack):
 		if not oMapHandler.IsCantainer(tx, ty) or oMapHandler.IsChar(tx, ty, defines.WALL_C):
 			continue
 
+		if (tx, ty) in stack:
+			continue
+
+		#终点位置
+		if oMapHandler.IsChar(tx, ty, defines.END_C):
+			return step
+
 		oMapHandler.SetBook(tx, ty, 1)
 		oMapHandler.Print()
 		time.sleep(0.5)
-		stack.append((tx, ty))
-		DFS(oMapHandler, tx, ty, step+1, stack)
-		oMapHandler.SetBook(tx, ty, 0)
+		r = DFS(oMapHandler, tx, ty, step+1, stack)
+		oMapHandler.SetBook(tx, ty, 0)		
+		if r:
+			return r
+	return 0
+
 
 def Demo():
 	import ui 
 	oMap = ui.CMap()
 	oMap.Print()
 
-	# c = raw_input("请输出P(p)键进行演示：")
-	# if c == "P" or c == "p":
 	oMap.ClearBooks()
 	x, y = oMap.m_Hero
 	stack = []

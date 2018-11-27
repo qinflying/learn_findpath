@@ -35,6 +35,8 @@ class CMap(basemap.CMap):
 		self.m_Maps[(3, 4)] = defines.WALL_C
 		self.m_Maps[(4, 4)] = defines.WALL_C
 		self.m_Maps[(5, 4)] = defines.WALL_C
+		self.m_Maps[(7, 2)] = defines.WALL_C
+		self.m_Maps[(6, 3)] = defines.WALL_C
 
 	def Print(self):
 		self.ClearPrint()
