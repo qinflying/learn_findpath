@@ -11,7 +11,7 @@ def DFS(oMapHandler, x, y, step, stack):
 	if oMapHandler.IsChar(x, y, defines.END_C):
 		return step
 
-	stack.append((x, y))
+	#stack.append((x, y))
 
 	#四周位置
 	for dx, dy in defines.FOUR_DIRS:
