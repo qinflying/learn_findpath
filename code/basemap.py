@@ -7,6 +7,7 @@ class CMap(object):
 	COL = 9
 	def __init__(self):
 		self.m_Hero = (0, 0)
+		self.m_End = (0, 0)
 		self.m_Maps = {}
 
 	def IsCantainer(self, x, y):

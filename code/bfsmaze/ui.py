@@ -9,8 +9,7 @@ class CMap(basemap.CMap):
 	def __init__(self):
 		basemap.CMap.__init__(self)
 		self.m_Books = {}
-		self.m_MiniStep = 99999
-		self.m_lPath = []
+		self.m_dPath = {}
 		self.InitMaps()
 
 	def SetBook(self, x, y, book):
@@ -19,18 +18,11 @@ class CMap(basemap.CMap):
 	def GetBook(self, x, y):
 		return self.m_Books.get((x, y), 0)
 
-	def SetMiniStep(self, step):
-		self.m_MiniStep = step
+	def SetPaths(self, curx, cury, frontx, fronty):
+		self.m_dPath[(curx, cury)] = (frontx, frontx)
 
-	def GetMiniStep(self):
-		return self.m_MiniStep
-
-	def SetPaths(self, paths):
-		self.m_lPath = paths[:]
-
-	def ClearDFS(self):
-		self.m_MiniStep = 99999
-		self.m_dPath = []
+	def ClearBFS(self):
+		self.m_dPath = {}
 		self.m_Books = {}
 
 	def InitMaps(self):
@@ -67,11 +59,13 @@ class CMap(basemap.CMap):
 
 	def PrintWithPath(self):
 		self.ClearPrint()
-		iLength = len(self.m_lPath)
+		lPath = self.AnalysisPath()
+		iLength = len(lPath)
+		print lPath, self.m_dPath
 		for idx in xrange(iLength):
 			time.sleep(0.1)
-			self.ClearPrint()
-			paths = self.m_lPath[:idx]
+			#self.ClearPrint()
+			paths = lPath[:idx]
 			for i in xrange(self.ROW):
 				for j in xrange(self.COL):
 					if (i, j) in paths:
@@ -81,9 +75,18 @@ class CMap(basemap.CMap):
 					self.PrintOne(e)
 				self.PrintOne("\n")
 
+	def AnalysisPath(self):
+		x, y = self.m_End
+		lPath = []
 
+		pos = self.m_dPath.get((x, y))
 
+		while pos:
 
+			#出现环状Bug
+			if pos in lPath:
+				break
+			lPath.append(pos)
 
-
-
+			pos = self.m_dPath.get(pos)
+		return lPath[-1::-1]
