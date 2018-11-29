@@ -19,7 +19,7 @@ class CMap(basemap.CMap):
 		return self.m_Books.get((x, y), 0)
 
 	def SetPaths(self, curx, cury, frontx, fronty):
-		self.m_dPath[(curx, cury)] = (frontx, frontx)
+		self.m_dPath[(curx, cury)] = (frontx, fronty)
 
 	def ClearBFS(self):
 		self.m_dPath = {}
@@ -61,11 +61,10 @@ class CMap(basemap.CMap):
 		self.ClearPrint()
 		lPath = self.AnalysisPath()
 		iLength = len(lPath)
-		print lPath, self.m_dPath
 		for idx in xrange(iLength):
 			time.sleep(0.1)
-			#self.ClearPrint()
-			paths = lPath[:idx]
+			self.ClearPrint()
+			paths = lPath[:idx+1]
 			for i in xrange(self.ROW):
 				for j in xrange(self.COL):
 					if (i, j) in paths:
@@ -77,7 +76,7 @@ class CMap(basemap.CMap):
 
 	def AnalysisPath(self):
 		x, y = self.m_End
-		lPath = []
+		lPath = [(x, y)]
 
 		pos = self.m_dPath.get((x, y))
 

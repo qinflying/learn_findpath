@@ -4,7 +4,7 @@ import defines
 import time
 
 #四方位
-FOUR_DIRS = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+FOUR_DIRS = [(-1, 0), (0, -1), (1, 0), (0, 1)]
 
 def BFS(oMapHander, x, y):
 	queue = []
@@ -26,19 +26,11 @@ def BFS(oMapHander, x, y):
 			if oMapHander.GetBook(tx, ty):
 				continue
 
-			if oMapHander.IsChar(tx, ty, defines.END_C):
-				bEnd = True 
-				break
-
 			queue.append((tx, ty))
 			oMapHander.SetBook(tx, ty, 1)
 			oMapHander.Print()
 			time.sleep(0.1)
 			oMapHander.SetPaths(tx, ty, x, y)
-
-		if bEnd:
-			break
-
 
 def Demo():
 	import ui 
