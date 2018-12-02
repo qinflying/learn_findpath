@@ -32,10 +32,11 @@ class CMap(object):
 			self.PrintOne("\n")
 
 	def PrintOne(self, c):
-		from colorama import Fore
 		color = defines.C2COLOR.get(c, "")
 		sys.stdout.write(color+c)
-		
+
+	def PrintContent(self, content):
+		sys.stdout.write(content)
 
 	def ClearPrint(self):
 		import os

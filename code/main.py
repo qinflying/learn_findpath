@@ -20,6 +20,7 @@ if __name__ == '__main__':
 
 	s = "1.DFS深度优先搜索.\n"
 	s+= "2.BFS广度优先搜索.\n"
+	s+= "3.A*算法.\n"
 	sys.stdout.write(Fore.YELLOW+s)
 
 	c = raw_input("请输入选项:")
@@ -29,3 +30,6 @@ if __name__ == '__main__':
 	elif c == "2":
 		import bfsmaze
 		bfsmaze.Demo()
+	elif c == "3":
+		import astar
+		astar.Demo()
