@@ -23,14 +23,14 @@ class CMap(basemap.CMap):
 		self.m_End = (6, 12)
 		self.m_Maps[(6, 12)] = d_defines.TYPE_END
 
-		self.m_Maps[(5, 10)] = d_defines.TYPE_WATER
-		self.m_Maps[(6, 10)] = d_defines.TYPE_WATER
-		self.m_Maps[(7, 10)] = d_defines.TYPE_WATER
-		self.m_Maps[(8, 10)] = d_defines.TYPE_WATER
-		self.m_Maps[(5, 9)] = d_defines.TYPE_WATER
-		self.m_Maps[(6, 9)] = d_defines.TYPE_WATER
-		self.m_Maps[(7, 9)] = d_defines.TYPE_WATER
-		self.m_Maps[(8, 9)] = d_defines.TYPE_WATER
+		self.m_Maps[(5, 10)] = d_defines.TYPE_WALL
+		self.m_Maps[(6, 10)] = d_defines.TYPE_WALL
+		self.m_Maps[(7, 10)] = d_defines.TYPE_WALL
+		self.m_Maps[(8, 10)] = d_defines.TYPE_WALL
+		self.m_Maps[(5, 9)] = d_defines.TYPE_WALL
+		self.m_Maps[(6, 9)] = d_defines.TYPE_WALL
+		self.m_Maps[(7, 9)] = d_defines.TYPE_WALL
+		self.m_Maps[(8, 9)] = d_defines.TYPE_WALL
 
 
 	def GetHero(self):
