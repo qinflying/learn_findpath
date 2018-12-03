@@ -1,5 +1,5 @@
 #-*- coding:utf-8 -*-
-#https://cloud.tencent.com/developer/news/261896
+#https://www.cnblogs.com/zhoug2020/p/3468167.html
 from . import ui 
 import time
 import math
