@@ -3,10 +3,10 @@
 from . import ui 
 import time
 import math
-
+MAX_COST = 999999
 def Demo():
 	oWork = CDijkstra()
-	oWork.work()
+	oWork.work2()
 
 class CNode(object):
 	def __init__(self, x=0, y=0, cost=9999):
@@ -93,16 +93,50 @@ class CDijkstra(object):
 				if not self.m_Map.IsCantainer(tx, ty) or self.m_Map.IsChar(tx, ty, d_defines.TYPE_WALL):
 					continue
 
-				if self.m_Map.IsChar(tx,ty, d_defines.TYPE_WATER):
-					ct = 2 
-				else:
-					ct = 1
-				ct = 1
 				cost = oNode.getCost() + self.calCost((x, y), (tx, ty))
 				oNewNode = CNode(tx, ty, cost)
 				oNewNode.setPreviousNode(oNode)
 
 				if not self.isInVisited(tx, ty):
+					self.m_Queue.push(oNewNode)
+					self.m_CloseList.append((tx, ty))
+					self.m_Map.Print(self.m_CloseList)
+					time.sleep(0.1)
+
+	def work2(self):
+		self.Reset()
+		self.m_Map.Print()
+
+		x, y = self.m_Map.GetHero()
+		ex, ey = self.m_Map.GetEnd()
+		oInitNode = CNode(x, y, 0)
+		cost_so_far = {(x, y):0}
+
+		self.m_Queue.push(oInitNode)
+
+		while not self.m_Queue.empty():
+			oNode = self.m_Queue.poll()
+
+			x, y = oNode.getXY()
+
+			if x == ex and y == ey:
+				self.output(oNode)
+				break
+
+			for dx, dy in d_defines.EIGHT_DIRS:
+				tx = x + dx
+				ty = y + dy
+
+				#不可达
+				if not self.m_Map.IsCantainer(tx, ty) or self.m_Map.IsChar(tx, ty, d_defines.TYPE_WALL):
+					continue
+
+				cost = cost_so_far.get((x, y), MAX_COST) + self.calCost((x, y), (tx, ty))
+				oNewNode = CNode(tx, ty, cost)
+				oNewNode.setPreviousNode(oNode)
+
+				if not self.isInVisited(tx, ty) or cost < cost_so_far.get((tx, ty), MAX_COST):
+					cost_so_far[(tx, ty)] = cost
 					self.m_Queue.push(oNewNode)
 					self.m_CloseList.append((tx, ty))
 					self.m_Map.Print(self.m_CloseList)
@@ -114,7 +148,7 @@ class CDijkstra(object):
 
 		#water会增加1个点的消耗
 		if self.m_Map.IsChar(nx, ny, d_defines.TYPE_WATER):
-			watercost = 1 
+			watercost = 1
 		else:
 			watercost = 0
 

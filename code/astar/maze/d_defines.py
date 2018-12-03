@@ -19,10 +19,10 @@ I2CHAR = {
 #前景颜色
 I2FCOLOR = {
 	TYPE_WALL : Fore.YELLOW,
-	TYPE_WATER : Fore.BLUE,
+	TYPE_WATER : Back.CYAN,
 	TYPE_EMPTY : Back.WHITE,
-	TYPE_HERO : Fore.CYAN,
-	TYPE_END : Fore.CYAN,
+	TYPE_HERO : Fore.GREEN,
+	TYPE_END : Fore.GREEN,
 	TYPE_PATH : Fore.RED,
 }
 
@@ -32,9 +32,13 @@ I2BCOLOR = {
 }
 
 #四方位
-FOUR_DIRS = [
+EIGHT_DIRS = [
 	(-1, 0),
+	(-1, -1),
 	(0, -1),
+	(1, -1),
 	(1, 0),
+	(1, 1),
 	(0, 1),
+	(-1, 1),
 ]

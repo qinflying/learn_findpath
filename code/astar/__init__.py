@@ -1,5 +1,8 @@
 #-*- coding:utf-8 -*-
-
-def Demo():
+def MazeDemo():
+	import maze
+	maze.Demo()
+	
+def RobotDemo():
 	import robot
 	robot.Demo()
