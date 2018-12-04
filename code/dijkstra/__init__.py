@@ -38,7 +38,6 @@ class CPriorityQueue(object):
 	def __init__(self):
 		self.m_Queue = []
 
-
 	def empty(self):
 		return len(self.m_Queue) == 0
 
@@ -140,7 +139,7 @@ class CDijkstra(object):
 					self.m_Queue.push(oNewNode)
 					self.m_CloseList.append((tx, ty))
 					self.m_Map.Print(self.m_CloseList)
-					time.sleep(0.1)
+					time.sleep(0.05)
 
 	def calCost(self, current, next):
 		cx, cy = current
@@ -148,11 +147,10 @@ class CDijkstra(object):
 
 		#water会增加1个点的消耗
 		if self.m_Map.IsChar(nx, ny, d_defines.TYPE_WATER):
-			watercost = 1
+			watercost = 10
 		else:
 			watercost = 0
-
-		cost = watercost + math.sqrt((cx - nx) * (cx - nx) + (cy - ny) * (cy - ny))
+		cost = watercost + math.sqrt((cx - nx) * (cx - nx) + (cy - ny) * (cy - ny)) * 10
 		return cost
 
 	def output(self, oNode):

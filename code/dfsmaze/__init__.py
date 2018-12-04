@@ -32,7 +32,9 @@ def DFS(oMapHandler, x, y, step, stack):
 		oMapHandler.Print()
 
 		oMapHandler.SetBook(tx, ty, 1)
-		DFS(oMapHandler, tx, ty, step+1, stack)
+		tp = DFS(oMapHandler, tx, ty, step+1, stack)
+		if tp:
+			return tp
 		if stack:
 			stack.pop()
 		oMapHandler.SetBook(tx, ty, 0)		
