@@ -1,5 +1,7 @@
 #-*- coding:utf-8 -*-
 #https://www.cnblogs.com/zhoug2020/p/3468167.html
+#https://blog.csdn.net/xgf415/article/details/75200047
+#https://blog.csdn.net/zhangxiaofan666/article/details/71715098
 from . import ui 
 import time
 import math
