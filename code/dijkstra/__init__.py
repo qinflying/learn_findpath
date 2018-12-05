@@ -6,7 +6,7 @@ import math
 MAX_COST = 999999
 def Demo():
 	oWork = CDijkstra()
-	oWork.work2()
+	oWork.work()
 
 class CNode(object):
 	def __init__(self, x=0, y=0, cost=9999):
@@ -54,67 +54,54 @@ class CPriorityQueue(object):
 
 		self.m_Queue.insert(index, o)
 
+	def update(self, o):
+		if o in self.m_Queue:
+			self.m_Queue.remove(o)
+		self.push(o)
+
+	def containerNode(self, o):
+		for no in self.m_Queue:
+			if no.getXY() == o.getXY():
+				return no 
+		return None
+
+class CCloseQueue(object):
+	def __init__(self):
+		self.m_Queue = []
+		self.m_XY = []
+
+	def push(self, o):
+		self.m_Queue.append(o)
+		self.m_XY.append(o.getXY())
+
+	def container(self, o):
+		return o.getXY() in self.m_XY
+
 class CDijkstra(object):
 	def __init__(self):
-		self.m_Queue = CPriorityQueue() 
+		self.m_OpenQueue = CPriorityQueue() 
 		self.m_Map = ui.CMap()
-		self.m_CloseList = []
+		self.m_CloseQueue = CCloseQueue()
 
 	def Reset(self):
-		self.m_Queue = CPriorityQueue() 
+		self.m_OpenQueue = CPriorityQueue() 
 		self.m_Map = ui.CMap()
-		self.m_CloseList = []
+		self.m_CloseQueue = CCloseQueue()
 
 	def work(self):
 		self.Reset()
 		self.m_Map.Print()
-
-		x, y = self.m_Map.GetHero()
-		ex, ey = self.m_Map.GetEnd()
-		oInitNode = CNode(x, y, 0)
-
-		self.m_Queue.push(oInitNode)
-
-		while not self.m_Queue.empty():
-			oNode = self.m_Queue.poll()
-
-			x, y = oNode.getXY()
-
-			if x == ex and y == ey:
-				self.output(oNode)
-				break
-
-			for dx, dy in d_defines.EIGHT_DIRS:
-				tx = x + dx
-				ty = y + dy
-
-				#不可达
-				if not self.m_Map.IsCantainer(tx, ty) or self.m_Map.IsChar(tx, ty, d_defines.TYPE_WALL):
-					continue
-
-				cost = oNode.getCost() + self.calCost((x, y), (tx, ty))
-				oNewNode = CNode(tx, ty, cost)
-				oNewNode.setPreviousNode(oNode)
-
-				if not self.isInVisited(tx, ty):
-					self.m_Queue.push(oNewNode)
-					self.m_CloseList.append((tx, ty))
-					self.m_Map.Print(self.m_CloseList)
-					time.sleep(0.1)
-
-	def work2(self):
-		self.Reset()
-		self.m_Map.Print()
-
+		lPrint = []
 		x, y = self.m_Map.GetHero()
 		ex, ey = self.m_Map.GetEnd()
 		oInitNode = CNode(x, y, 0)
 		cost_so_far = {(x, y):0}
 
-		self.m_Queue.push(oInitNode)
+		self.m_OpenQueue.push(oInitNode)
 
-		while not self.m_Queue.empty():
-			oNode = self.m_Queue.poll()
+		while not self.m_OpenQueue.empty():
+			oNode = self.m_OpenQueue.poll()
+
 
 			x, y = oNode.getXY()
 
@@ -134,12 +121,26 @@ class CDijkstra(object):
 				oNewNode = CNode(tx, ty, cost)
 				oNewNode.setPreviousNode(oNode)
 
-				if not self.isInVisited(tx, ty) or cost < cost_so_far.get((tx, ty), MAX_COST):
-					cost_so_far[(tx, ty)] = cost
-					self.m_Queue.push(oNewNode)
-					self.m_CloseList.append((tx, ty))
-					self.m_Map.Print(self.m_CloseList)
-					time.sleep(0.05)
+				oContainerNode = self.m_OpenQueue.containerNode(oNewNode)
+				#在关闭列表中，直接不处理
+				if self.m_CloseQueue.container(oNewNode):
+					continue
+				#节点在开开放列表时
+				if oContainerNode:
+					if cost < oContainerNode.getCost():
+						oContainerNode.setCost(cost)
+						oContainerNode.setPreviousNode(oNode)
+						self.m_OpenQueue.update(oContainerNode)
+					continue
+
+				self.m_OpenQueue.push(oNewNode)
+
+				if (tx, ty) not in lPrint:
+					lPrint.append((tx, ty))
+				self.m_Map.Print(lPrint)
+				time.sleep(0.05)
+
+			self.m_CloseQueue.push(oNode)
 
 	def calCost(self, current, next):
 		cx, cy = current

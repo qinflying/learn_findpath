@@ -23,7 +23,7 @@ if __name__ == '__main__':
 	s+= "2.BFS广度优先搜索.\n"
 	s+= "3.Dijkstra算法.\n"
 	s+= "4.A*算法.\n"
-	s+= "5.A*算法 扫地机器人.\n"
+	# s+= "5.A*算法 扫地机器人.\n"
 	sys.stdout.write(Fore.YELLOW+s)
 
 	c = raw_input("请输入选项:")
