@@ -2,6 +2,8 @@
 #https://www.cnblogs.com/zhoug2020/p/3468167.html
 #https://blog.csdn.net/xgf415/article/details/75200047
 #https://blog.csdn.net/zhangxiaofan666/article/details/71715098
+#ʵ���㷨
+#https://blog.csdn.net/zhulichen/article/details/78786493
 from . import ui 
 import time
 import math
@@ -102,7 +104,7 @@ class CAStar(object):
 				tx = x + dx
 				ty = y + dy
 
-				#不可达
+				#不可�?
 				if not self.m_Map.IsCantainer(tx, ty) or self.m_Map.IsChar(tx, ty, d_defines.TYPE_WALL):
 					continue
 
@@ -121,7 +123,7 @@ class CAStar(object):
 		cx, cy = current
 		nx, ny = next
 
-		#water会增加1个点的消耗
+		#water会增�?1个点的消�?
 		if self.m_Map.IsChar(nx, ny, d_defines.TYPE_WATER):
 			watercost = 1
 		else:
