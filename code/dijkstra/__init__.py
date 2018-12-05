@@ -95,32 +95,23 @@ class CDijkstra(object):
 		x, y = self.m_Map.GetHero()
 		ex, ey = self.m_Map.GetEnd()
 		oInitNode = CNode(x, y, 0)
-		cost_so_far = {(x, y):0}
-
 		self.m_OpenQueue.push(oInitNode)
 
 		while not self.m_OpenQueue.empty():
 			oNode = self.m_OpenQueue.poll()
-
-
 			x, y = oNode.getXY()
-
 			if x == ex and y == ey:
 				self.output(oNode)
 				break
-
 			for dx, dy in d_defines.EIGHT_DIRS:
 				tx = x + dx
 				ty = y + dy
-
 				#不可达
 				if not self.m_Map.IsCantainer(tx, ty) or self.m_Map.IsChar(tx, ty, d_defines.TYPE_WALL):
 					continue
-
-				cost = cost_so_far.get((x, y), MAX_COST) + self.calCost((x, y), (tx, ty))
+				cost = oNode.getCost() + self.calCost((x, y), (tx, ty))
 				oNewNode = CNode(tx, ty, cost)
 				oNewNode.setPreviousNode(oNode)
-
 				oContainerNode = self.m_OpenQueue.containerNode(oNewNode)
 				#在关闭列表中，直接不处理
 				if self.m_CloseQueue.container(oNewNode):
@@ -132,14 +123,11 @@ class CDijkstra(object):
 						oContainerNode.setPreviousNode(oNode)
 						self.m_OpenQueue.update(oContainerNode)
 					continue
-
 				self.m_OpenQueue.push(oNewNode)
-
 				if (tx, ty) not in lPrint:
 					lPrint.append((tx, ty))
 				self.m_Map.Print(lPrint)
 				time.sleep(0.05)
-
 			self.m_CloseQueue.push(oNode)
 
 	def calCost(self, current, next):
