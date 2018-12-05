@@ -14,7 +14,6 @@ def Demo():
 
 class CNode(object):
 	def __init__(self, x=0, y=0, cost=9999, f=99999):
-		super(CNode, self).__init__()
 		self.m_X = x
 		self.m_Y = y 
 		self.m_Cost = cost 
@@ -64,22 +63,25 @@ class CPriorityQueue(object):
 	def push(self, o):
 		index = len(self.m_Queue)
 		for idx, e in enumerate(self.m_Queue):
-			if e.G() > o.G():
+			if e.G() >= o.G():
 				index = idx 
 				break 
 
 		self.m_Queue.insert(index, o)
 
+		# print "push:", o.getXY()
+		# print "queue:", [(oo.getXY(), int(oo.G())) for oo in self.m_Queue]
+
 	def containerNode(self, o):
 		for oo in self.m_Queue:
-			if o.getXY() == o.getXY():
+			if oo.getXY() == o.getXY():
 				return oo 
 		return None 
 
 	def update(self, o):
 		if o in self.m_Queue:
 			self.m_Queue.remove(o)
-		self.push(0)
+		self.push(o)
 
 class CCloseQueue(object):
 	def __init__(self):
@@ -106,19 +108,21 @@ class CAStar(object):
 
 	def work(self):
 		self.Reset()
-		#self.m_Map.Print()
+		self.m_Map.Print()
 
 		lPrint = []
 
 		x, y = self.m_Map.GetHero()
 		ex, ey = self.m_Map.GetEnd()
 		f = self.calF((x, y), (ex, ey))
-		oInitNode = CNode(x, y, 0, f)
+		oInNode = CNode(x, y, 0, f)
 
-		self.m_OpenQueue.push(oInitNode)
+
+		self.m_OpenQueue.push(oInNode)
 
 		while not self.m_OpenQueue.empty():
 			oNode = self.m_OpenQueue.poll()
+
 			x, y = oNode.getXY()
 
 			if x == ex and y == ey:
@@ -154,29 +158,23 @@ class CAStar(object):
 
 				self.m_OpenQueue.push(oNewNode)
 
-				if (tx, ty) not in lPrint:
-					lPrint.append((tx, ty))
-				self.m_Map.Print(lPrint)
-				time.sleep(0.05)
+			if (x, y) not in lPrint:
+				lPrint.append((x, y))
+			self.m_Map.Print(lPrint)
+			time.sleep(0.3)
 			self.m_CloseQueue.push(oNode)
 
 	def calCost(self, current, next):
 		cx, cy = current
 		nx, ny = next
-
-		if self.m_Map.IsChar(nx, ny, d_defines.TYPE_WATER):
-			watercost = 1
-		else:
-			watercost = 0
-
-		cost = watercost + math.sqrt((cx - nx) * (cx - nx) + (cy - ny) * (cy - ny))
+		cost = math.sqrt((cx - nx) * (cx - nx) + (cy - ny) * (cy - ny)) * 10
 		return cost
 
 	def calF(self, current, end):
 		cx, cy = current
 		ex, ey = end
 
-		return abs(cx - ex) + abs(cy - ey)
+		return (abs(cx - ex) + abs(cy - ey)) * 10
 
 	def output(self, oNode):
 		lst = []
